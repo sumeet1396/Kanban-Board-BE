@@ -18,6 +18,7 @@ dotenv.config({ path: './.env' });
 const DB = process.env.DB_URL.replace('<PASSWORD>', process.env.MONGO_PASSWORD);
 
 const AppError = require('./utils/appError');
+const userRouter = require('./routes/userRoutes');
 
 mongoose
   .connect(DB, {
@@ -54,10 +55,12 @@ app.use(xss());
 
 
 // ping api
-
 app.get("/ping", (req, res) => {
     res.send('PING')
 })
+
+app.use('/kanban/api/v1/users', userRouter);
+
 //404 url error handler for all http request methods
 app.all('*', (req, res, next) => {
     next(new AppError(`Can't found ${req.originalUrl} on the server`, 404));
