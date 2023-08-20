@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide your Phone number'],
     unique: true,
     lowercase: true,
+    validate: [validator.isMobilePhone, 'Please provide your Phone number'] 
   }, 
   photo: String,
   role: {

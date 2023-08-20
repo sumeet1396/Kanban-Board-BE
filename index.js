@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const morgan = require('morgan');
+const cors = require('cors');
 
 process.on('uncaughtException', (err) => {
     console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
@@ -52,6 +53,13 @@ app.use(mongoSanitize());
 
 // Data sanitization against XSS
 app.use(xss());
+
+// Use the cors middleware
+app.use(cors());
+
+app.use(cors({
+    origin: 'http://localhost:5137', // Replace with your allowed origin
+  }));
 
 
 // ping api
