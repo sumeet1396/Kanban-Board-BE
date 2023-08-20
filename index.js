@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const morgan = require('morgan');
+const cors = require('cors');
 
 process.on('uncaughtException', (err) => {
     console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
@@ -18,6 +19,7 @@ dotenv.config({ path: './.env' });
 const DB = process.env.DB_URL.replace('<PASSWORD>', process.env.MONGO_PASSWORD);
 
 const AppError = require('./utils/appError');
+const userRouter = require('./routes/userRoutes');
 
 mongoose
   .connect(DB, {
@@ -52,12 +54,21 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
+// Use the cors middleware
+app.use(cors());
+
+app.use(cors({
+    origin: 'http://localhost:5137', // Replace with your allowed origin
+  }));
+
 
 // ping api
-
 app.get("/ping", (req, res) => {
     res.send('PING')
 })
+
+app.use('/kanban/api/v1/users', userRouter);
+
 //404 url error handler for all http request methods
 app.all('*', (req, res, next) => {
     next(new AppError(`Can't found ${req.originalUrl} on the server`, 404));
