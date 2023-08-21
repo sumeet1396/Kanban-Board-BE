@@ -57,8 +57,9 @@ app.use(xss());
 // Use the cors middleware
 app.use(cors());
 
+const allowedOrigins = ['http://127.0.0.1:5173','http://localhost:5137'];
 app.use(cors({
-    origin: 'http://localhost:5137', // Replace with your allowed origin
+    origin: allowedOrigins, // Replace with your allowed origin
   }));
 
 
