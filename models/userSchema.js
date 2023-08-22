@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isMobilePhone, 'Please provide your Phone number'] 
   }, 
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'other'], // Allowed values for gender
+    required: true,
+  }, 
   photo: String,
   role: {
     type: String,
